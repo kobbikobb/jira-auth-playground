@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - playground-data:/data/db
+
+  playground-api:
+    build: ./playground-api
+    container_name: playground-api
+    restart: always
+    ports:
+      - '8081:8080'
+    links:
+      - mongo
+    volumes:
+      - ./playground-api:/app
+
+  playground-frontend:
+    build: ./playground-frontend
+    container_name: playground-frontend
+    restart: always
+    ports:
+      - 8082:3000
+    links:
+      - playground-api
+    volumes:
+      - ./playground-frontend:/app
+
+
+volumes:
+  playground-data:
