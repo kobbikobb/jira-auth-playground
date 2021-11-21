@@ -1,23 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { getAuthLink } from "./authUtils";
-import * as settingsUtils from "./settingsUtils";
+import { getAuthLink } from "./utils/authUtils";
+import * as api from './utils/apiUtils';
 
 const Autorize = () => {
-  const [clientId, setClientId] = useState(settingsUtils.getClientId());
-  const [secret, setSecret] = useState(settingsUtils.getSecret());
+  const [clientId, setClientId] = useState('');
+  const [secret, setSecret] = useState('');
+
+    useEffect(() => {
+      async function fetchSettings() {
+        const settings = await api.getSettings();
+
+        if(settings != null) {
+          setClientId(settings.clientId);
+          setSecret(settings.secret);
+        }
+      };
+
+      fetchSettings();
+    }, []);
 
   const onClientIdChanged = (e) => {
     const value = e.target.value;
     setClientId(value);
-    settingsUtils.setClientId(value);
+
+    // TODO: Debounce
+    api.saveSettings({
+      clientId: value
+    });
   };
 
   const onSecretChanged = (e) => {
     const value = e.target.value;
     setSecret(value);
-    settingsUtils.setSecret(value);
+
+    // TODO: Debounce
+    api.saveSettings({
+      secret: value
+    });
   };
 
   const authLink = getAuthLink(clientId);

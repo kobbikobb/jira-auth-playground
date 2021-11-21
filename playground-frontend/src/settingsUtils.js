@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "./cookieUtils";
+import { getCookie, setCookie } from "./utils/cookieUtils";
 
 const CLIENT_ID = "playground-client-id";
 const SECRET = "playground-secret";

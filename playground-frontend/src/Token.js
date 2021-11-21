@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Alert, Button } from "react-bootstrap";
-import { getAuthToken } from "./authUtils";
+import { getAuthToken } from "./utils/authUtils";
 import * as settingsUtils from "./settingsUtils";
 
 const Token = () => {

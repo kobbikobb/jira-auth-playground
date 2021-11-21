@@ -7,8 +7,25 @@ export const getSettings = async (req: express.Request, res: express.Response) =
   res.json(settings);
 };
 
-export const postSettings = async (req: express.Request, res: express.Response) => {
+export const putSettings = async (req: express.Request, res: express.Response) => {
    const inputSettings = req.body as settingsModel.ISettings;
-   const createdSettings = await settingsModel.createSettings(inputSettings);
-   res.json(createdSettings);
+
+   const existingSettings = await settingsModel.getSettings(inputSettings.userId);
+   if(existingSettings) {
+
+     if(inputSettings.clientId != undefined) {
+       existingSettings.clientId = inputSettings.clientId ;
+     }
+
+     if(inputSettings.secret != undefined) {
+      existingSettings.secret = inputSettings.secret ;
+    }
+
+    await existingSettings.save();
+    res.json(existingSettings);
+    
+   } else {
+    const createdSettings = await settingsModel.createSettings(inputSettings);
+    res.json(createdSettings);
+   }
 };

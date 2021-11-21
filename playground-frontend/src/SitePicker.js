@@ -1,5 +1,5 @@
 import React from "react";
-import { getCookie } from "./cookieUtils";
+import { getCookie } from "./utils/cookieUtils";
 
 const AUTH_TOKEN = "playground-auth-token";
 
