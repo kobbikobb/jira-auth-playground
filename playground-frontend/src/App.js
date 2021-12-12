@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home";
+import AuthSettings from "./AuthSettings";
 import Autorize from "./Authorize";
 import Sidebar from "./Sidebar";
 import Token from "./Token";
@@ -20,6 +21,9 @@ function App() {
           </Col>
           <Col xs={10} id="page-content-wrapper">
             <Switch>
+            <Route path="/auth-settings">
+                <AuthSettings />
+              </Route>
               <Route path="/authorize">
                 <Autorize />
               </Route>

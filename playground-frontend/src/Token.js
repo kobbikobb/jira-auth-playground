@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Alert, Button } from "react-bootstrap";
-import { getAuthToken } from "./utils/authUtils";
 import * as settingsUtils from "./settingsUtils";
+import * as api from './utils/apiUtils';
 
 const Token = () => {
   const [authCode, setAuthCode] = useState(settingsUtils.getCode());
-  const [accessToken, setAccessToken] = useState(settingsUtils.getToken().access_token);
+  const [authTokens, setAuthTokens] = useState([]);
 
   const onAuthCodeChanged = (e) => {
     const value = e.target.value;
@@ -13,19 +13,27 @@ const Token = () => {
     settingsUtils.setCode(value);
   };
 
+
+  useEffect(() => {
+    async function fetchData() {
+      const authTokenValues = await api.getAuthTokens();
+      setAuthTokens(authTokenValues);
+    };
+
+    fetchData();
+  }, []);
+  
+
   const onGetAuthToken = async (event) => {
     event.preventDefault();
     
     try {
-      const newToken = await getAuthToken(
-        settingsUtils.getClientId(),
-        settingsUtils.getSecret(),
-        authCode
-      );
-      setAccessToken(newToken.access_token);
-      settingsUtils.setToken(newToken);
+      const newToken = await api.setAuthCode(authCode)
+
+      console.log('newToken', JSON.stringify(newToken));
+      console.log('access_token', newToken.access_token);
     } catch (error) {
-      console.log('error', error);
+      console.log('Setting token failed', error.message);
       alert(error.message);
     }
   };
@@ -47,11 +55,11 @@ const Token = () => {
       </Form.Group>
 
       <Button variant="primary" type="submit" onClick={onGetAuthToken}>
-        Get auth token
+        Set auth token
       </Button>
 
       <Alert variant="success" style={{ marginTop: "20px" }}>
-        Authentication token: {accessToken}
+        Authentication token: {JSON.stringify(authTokens)}
       </Alert>
     </Form>
   );

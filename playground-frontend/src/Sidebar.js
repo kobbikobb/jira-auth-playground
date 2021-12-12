@@ -11,6 +11,11 @@ const Sidebar = (props) => {
         </Link>
       </Nav.Item>
       <Nav.Item>
+        <Link to="/auth-settings" className="nav-link">
+          Auth settings
+        </Link>
+      </Nav.Item>
+      <Nav.Item>
         <Link to="/authorize" className="nav-link">
           Authorize
         </Link>

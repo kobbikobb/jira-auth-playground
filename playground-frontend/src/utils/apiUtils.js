@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const getSettings = async () => {
-  // TODO: Read from browser
-  const userId = 'userId12';
+// TODO: Read from browser or solve otherwise?
+const userId = 'userId12';
 
+export const getSettings = async () => {
   const result = await axios({
     method: 'GET',
     url: `http://localhost:8081/api/settings?userId=${userId}`,
@@ -14,17 +14,45 @@ export const getSettings = async () => {
 
 
 export const saveSettings = async ({clientId, secret}) => {
-  // TODO: Read from browser
-  const userId = 'userId12';
-
   const result = await axios({
     method: 'PUT',
-    url: `http://localhost:8081/api/settings?userId=${userId}`,
+    url: 'http://localhost:8081/api/settings',
     data: {
       userId,
       clientId,
       secret
     }
+  });
+
+  return result.data;
+};
+
+export const getAuthLink = async () => {
+  const result = await axios({
+    method: 'GET',
+    url: `http://localhost:8081/api/auth/link?userId=${userId}`,
+  });
+
+  return result.data.url;
+};
+
+export const setAuthCode = async code => {
+  const result = await axios({
+    method: 'POST',
+    url: 'http://localhost:8081/api/auth/code',
+    data: {
+      userId,
+      code,
+    }
+  });
+
+  return result.data;
+};
+
+export const getAuthTokens = async code => {
+  const result = await axios({
+    method: 'GET',
+    url: `http://localhost:8081/api/auth/tokens?userId=${userId}`,
   });
 
   return result.data;
