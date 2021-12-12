@@ -49,7 +49,7 @@ export const setAuthCode = async code => {
   return result.data;
 };
 
-export const getAuthTokens = async code => {
+export const getAuthTokens = async () => {
   const result = await axios({
     method: 'GET',
     url: `http://localhost:8081/api/auth/tokens?userId=${userId}`,
