@@ -38,3 +38,4 @@ export async function getAuthToken(clientId: string, secret: string, code: strin
   });
   return result.data;
 }
+
