@@ -27,3 +27,11 @@ export const createAuthToken = (authToken: IAuthToken) => {
 export const getAuthTokens = async (userId: string) => {
   return AuthToken.find({ userId });
 }
+
+export const getNewestAuthToken = async (userId: string) => {
+  const authTokens = await AuthToken.find({ userId }).sort( {createdAt: 'desc'}).limit(1);
+  if(authTokens.length > 0) {
+    return authTokens[0];
+  }
+  return null;
+}

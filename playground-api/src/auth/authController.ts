@@ -5,6 +5,7 @@ import * as authUtils from './authUtils';
 
 const HTTP_STATUS = {
   NOT_FOUND: 404,
+  BAD_REQUEST: 400,
   ERROR: 500,
 };
 
@@ -52,7 +53,7 @@ export const setAuthCode = async (req: express.Request, res: express.Response) =
     });
 
   } catch(error) {
-    res.status(HTTP_STATUS.ERROR).json({
+    res.status(HTTP_STATUS.BAD_REQUEST).json({
       error,
     });
   }
@@ -64,7 +65,22 @@ export const getAuthTokens = async (req: express.Request, res: express.Response)
 
   const authTokens = await authTokenModel.getAuthTokens(userId);
 
-  res.json({
+  res.json(
      authTokens
-  });
+  );
+};
+
+export const getNewestAuthToken = async (req: express.Request, res: express.Response) => {
+  const userId = req.query.userId as string;
+
+  const authToken = await authTokenModel.getNewestAuthToken(userId);
+  if(authToken !== null) {
+    res.json(
+      authToken
+    );
+  } else {
+    res.status(HTTP_STATUS.NOT_FOUND).json({
+      error: 'No auth token found'
+    });
+  }
 };

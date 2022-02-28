@@ -20,7 +20,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-mongoose.connect('mongodb://mongo:27017/playground-api')
+mongoose.connect('mongodb://playground-mongo:27017/playground-api')
 .then(() => {
   console.log("Connected to Mongo!");
 })

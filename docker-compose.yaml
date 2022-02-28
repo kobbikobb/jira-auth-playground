@@ -2,8 +2,8 @@ version: '3'
 
 services:
 
-  mongo:
-    container_name: mongo
+  playground-mongo:
+    container_name: playground-mongo
     image: mongo
     ports:
       - '27017:27017'
@@ -17,7 +17,7 @@ services:
     ports:
       - '8081:8080'
     links:
-      - mongo
+      - playground-mongo
     volumes:
       - ./playground-api:/app
 

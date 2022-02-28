@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Alert, Button } from "react-bootstrap";
 import * as settingsUtils from "./settingsUtils";
 import * as api from './utils/apiUtils';
+import AuthTokenItem from './AuthTokenItem';
 
 const Token = () => {
   const [authCode, setAuthCode] = useState(settingsUtils.getCode());
@@ -16,27 +17,25 @@ const Token = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const authTokenValues = await api.getAuthTokens();
-      setAuthTokens(authTokenValues);
+      setAuthTokens(await api.getAuthTokens());
     };
 
     fetchData();
   }, []);
   
 
-  const onGetAuthToken = async (event) => {
+  const onSetAuthToken = async (event) => {
     event.preventDefault();
     
     try {
-      const newToken = await api.setAuthCode(authCode)
-
-      console.log('newToken', JSON.stringify(newToken));
-      console.log('access_token', newToken.access_token);
+      await api.setAuthCode(authCode)
+      setAuthTokens(await api.getAuthTokens());
     } catch (error) {
-      console.log('Setting token failed', error.message);
       alert(error.message);
     }
   };
+
+  const authTokensSorted = authTokens.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)
 
   return (
     <Form>
@@ -54,13 +53,16 @@ const Token = () => {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit" onClick={onGetAuthToken}>
+      <Button variant="primary" type="submit" onClick={onSetAuthToken}>
         Set auth token
       </Button>
 
-      <Alert variant="success" style={{ marginTop: "20px" }}>
-        Authentication token: {JSON.stringify(authTokens)}
-      </Alert>
+      <h4 style={{marginTop: 20}}>Authentication tokens</h4>
+      {
+        authTokensSorted.map(authToken => 
+          <AuthTokenItem authToken={authToken} isActive={authToken === authTokensSorted[0]}/>)
+      }
+   
     </Form>
   );
 };

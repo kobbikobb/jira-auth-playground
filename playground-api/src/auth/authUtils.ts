@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // TODO: Read from a config
 const REDIRECT_URL = "https://localhost:3000/token";
-const SCOPES = ["read:jira-user", "read:jira-work", "offline_access"];
+const SCOPES = ["read:jira-user", "read:jira-work", "write:jira-work", "offline_access"];
 
 const AUTH_BASE_URL = "https://auth.atlassian.com";
 

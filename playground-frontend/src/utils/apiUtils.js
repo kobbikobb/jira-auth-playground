@@ -57,3 +57,12 @@ export const getAuthTokens = async () => {
 
   return result.data;
 };
+
+export const getNewestAuthToken = async () => {
+  const result = await axios({
+    method: 'GET',
+    url: `http://localhost:8081/api/auth/tokens/newest?userId=${userId}`,
+  });
+
+  return result.data;
+};
