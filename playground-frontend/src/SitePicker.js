@@ -48,6 +48,15 @@ const SitePicker = () => {
           }
         </Dropdown.Menu>
       </Dropdown>
+
+      {site && <div>
+        <br />
+        <Alert variant="success">
+          <div><b>Name: </b>{site.name}</div>
+          <div><b>Id: </b>{site.id}</div>
+          <div><b>Url: </b>{site.url}</div>
+        </Alert>
+      </div>}
     </div>
   );
 };
